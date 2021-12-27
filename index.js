@@ -3,7 +3,7 @@ const fs = require ('fs')
 const Manager = require('./lib/Manager');
 const Intern = require('./lib/Intern');
 const Engineer = require('./lib/Engineer');
-
+const geneTeamHtml = require('./src/genHtml')
 const groupArray =[];
 
 function addMana (){
@@ -12,18 +12,13 @@ function addMana (){
             {
                type: 'input',
                name:'name',
-               message:'What is your name?',
+               message:'Please enter the managers name',
 
             },
             {
                type: 'input',
                name: 'email',
                message: 'what is your email?'
-            },
-            {
-                type: 'input',
-                name: 'manager',
-                message: 'who is the manager of this team?'
             },
             {
                 type: 'input',
@@ -38,10 +33,10 @@ function addMana (){
         ])
         .then(managerInput => {
             const {name, id, email, officeNumber} = managerInput;
-            const manager = new manager(name, id, email,officeNumber);
+            const manager = new Manager(name, id, email,officeNumber);
 
             groupArray.push(manager)
-            console.log(manager);
+            addEmployee();
         })
     
 };
@@ -53,7 +48,7 @@ function addEmployee () {
                 type:'list',
                 name:'role',
                 message:'Please choose a role?',
-                chocies:[
+                choices:[
                     'engineer',
                     'intern'
                 ]
@@ -85,5 +80,45 @@ function addEmployee () {
                 message:'Please enter your github username',
                 when:(input) => input.role === 'engineer'
             },
+            {
+                type: 'confirm',
+                name:' confrimAddEmployee',
+                message: 'Would you like to add another employee?',
+                default:'false'
+            }
+
         ])
+        .then (employData => {
+            let {name, id, email, role, github, school, confrimAddEmployee} = employData;
+            let employee;
+            if (role === 'engineer'){
+                employee = new Engineer(name, id, email, github);
+            } else if (role === 'intern'){
+                employee = new Intern (name,id, email, school);
+            }
+            groupArray.push(employee);
+
+            if (confrimAddEmployee){
+                return addEmployee(groupArray);
+
+            }else{
+                const teamData = geneTeamHtml(groupArray);
+                console.log(teamData);
+                writeToFile(teamData);
+            }
+
+        })
 }
+
+const writeToFile = data => {
+    fs.writeFile('./dist/output.html', data, err =>{
+        if (err){
+            console.log(err);
+            return;
+        }else{
+            console.log("Your team profile was created! check index.html")
+        }
+    } )
+};
+
+addMana();
