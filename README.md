@@ -10,7 +10,7 @@ The user should clone the repository from GitHub and download Node. This applica
 
 ## Usage
 
-Within the command line you want to write node index.js which should get the application to start and you can start answering the prompts.
+Within the command line you want to write node index.js which should get the application to start and you can start answering the prompts.Heres a link to a video showing you how to start the application and how to answer the questions: https://watch.screencastify.com/v/VUlW37mKSKf2LwNH6Zs4
 
 ## Contributing
 
