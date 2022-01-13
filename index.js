@@ -12,7 +12,7 @@ function addMana (){
             {
                type: 'input',
                name:'name',
-               message:'Please enter the managers name',
+               message:'Please enter the managers name?',
 
             },
             {
@@ -42,12 +42,12 @@ function addMana (){
 };
 
 function addEmployee () {
-    inquirer
+    return inquirer
         .prompt([
             {
                 type:'list',
                 name:'role',
-                message:'Please choose a role?',
+                message:'Please choose a role for the employee?',
                 choices:[
                     'engineer',
                     'intern'
@@ -61,30 +61,30 @@ function addEmployee () {
             {
                 type:'input',
                 name:'id',
-                message: 'Please enter the employees id'
+                message: 'Please enter the employees id?'
             },
             {
                 type:'input',
                 name:'email',
-                message:'Please enter your email'
+                message:'Please enter your email?'
             },
             {
                 type:'input',
                 name:'school',
-                message:'Please enter your school name',
+                message:'Please enter your school name?',
                 when:(input) => input.role === 'intern'
             },
             {
                 type:'input',
                 name:'github',
-                message:'Please enter your github username',
+                message:'Please enter your github username?',
                 when:(input) => input.role === 'engineer'
             },
             {
-                type: 'confirm',
+                type: 'list',
                 name:' confrimAddEmployee',
                 message: 'Would you like to add another employee?',
-                default:'false'
+                choices: ["yes","no"]
             }
 
         ])
@@ -98,8 +98,8 @@ function addEmployee () {
             }
             groupArray.push(employee);
 
-            if (confrimAddEmployee){
-                return addEmployee(groupArray);
+            if (confrimAddEmployee === "yes"){
+                addEmployee();
 
             }else{
                 const teamData = geneTeamHtml(groupArray);
